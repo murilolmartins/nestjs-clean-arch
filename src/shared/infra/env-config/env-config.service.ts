@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config'
 export class EnvConfigService implements EnvConfig {
     constructor(private configService: ConfigService) {}
     getAppPort(): number {
+        console.log(this.configService.get<number>('APP_PORT'))
         return Number(this.configService.get<number>('APP_PORT'))
     }
 
