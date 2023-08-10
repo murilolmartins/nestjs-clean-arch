@@ -5,7 +5,6 @@ export const UserDataBuilder = (data?: Partial<UserProps>): UserProps => ({
     name: faker.person.fullName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
-    createdAd: faker.date.past(),
     ...data,
 })
 
