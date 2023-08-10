@@ -35,7 +35,7 @@ describe('ClassValidatorFields unit test', () => {
         expect(sut.errors).toHaveProperty('field')
         expect(sut.errors.field).toContain('field must be a string')
         expect(sut.validatedData).toBeNull()
-        expect(spyValidateSync).toHaveBeenCalled(1)
+        expect(spyValidateSync).toHaveBeenCalled()
     })
     test('Validate method should return true and set validatedData if validation succeds', () => {
         const sut = new StubClassValidatorFields()

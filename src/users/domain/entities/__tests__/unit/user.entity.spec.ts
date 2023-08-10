@@ -5,13 +5,13 @@ describe('UserEntity unit tests', () => {
     let props: UserProps
     let sut: UserEntity
 
-    beforeEach(() => {
+    beforeEach(async () => {
         props = UserDataBuilder()
 
-        sut = UserEntity.create(props)
+        sut = new UserEntity(props)
     })
 
-    it('Constructor method', () => {
+    it('Instance class', () => {
         expect(sut.name).toEqual(props.name)
         expect(sut.email).toEqual(props.email)
         expect(sut.password).toEqual(props.password)
@@ -36,23 +36,57 @@ describe('UserEntity unit tests', () => {
         expect(sut.password).toEqual(props.password)
         expect(typeof sut.password).toBe('string')
         expect(sut.password).toBeDefined()
-
-        console.log(sut.toJSON())
     })
 
     it('Update name method', () => {
         const newName = 'new_name'
 
+        UserEntity.validate = jest.fn().mockReturnValue({
+            name: newName,
+            email: props.email,
+            password: props.password,
+        })
+
         sut.updateName(newName)
 
         expect(sut.name).toEqual(newName)
+        expect(UserEntity.validate).toBeCalledTimes(1)
+        expect(UserEntity.validate).toBeCalledWith(props)
     })
 
     it('Update password method', () => {
         const newPassword = 'new_password'
 
+        UserEntity.validate = jest.fn().mockReturnValue({
+            name: props.name,
+            email: props.email,
+            password: newPassword,
+        })
+
         sut.updatePassword(newPassword)
 
         expect(sut.password).toEqual(newPassword)
+        expect(UserEntity.validate).toBeCalledTimes(1)
+        expect(UserEntity.validate).toBeCalledWith(props)
+    })
+
+    test('Create method', () => {
+        UserEntity.validate = jest.fn().mockReturnValue({
+            name: props.name,
+            email: props.email,
+            password: props.password,
+        })
+        const user = UserEntity.create(props)
+
+        expect(user.isRight()).toBeTruthy()
+        expect(user.value).toBeInstanceOf(UserEntity)
+        expect(user.isRight() && user.value.email).toEqual(props.email)
+        expect(user.isRight() && user.value.name).toEqual(props.name)
+        expect(user.isRight() && user.value.password).toEqual(props.password)
+        expect(user.isRight() && user.value.id).toBeDefined()
+        expect(user.isRight() && user.value.createdAt).toBeInstanceOf(Date)
+        expect(user.isRight() && user.value.updatedAt).toBeInstanceOf(Date)
+        expect(UserEntity.validate).toBeCalledTimes(1)
+        expect(UserEntity.validate).toBeCalledWith(props)
     })
 })
