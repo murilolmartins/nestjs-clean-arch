@@ -1,13 +1,15 @@
-import crypto from 'node:crypto'
+import { UUIDHelper } from '../helpers/uuid.helper'
 
 export class Entity<T = any> {
-    public readonly id: string
     public readonly createdAt: Date
     public readonly updatedAt: Date
 
-    constructor(public readonly props: T) {
+    constructor(
+        public readonly props: T,
+        public readonly id?: string,
+    ) {
         this.props = props
-        this.id = crypto.randomUUID()
+        this.id = UUIDHelper.validate(id) ? id : UUIDHelper.generate()
         this.createdAt = new Date()
         this.updatedAt = new Date()
     }

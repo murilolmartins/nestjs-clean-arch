@@ -2,8 +2,8 @@ import { Entity } from '../../entity'
 
 describe('Entity unit tests', () => {
     class StubEntity extends Entity<{ name: string }> {
-        constructor(props: { name: string }) {
-            super(props)
+        constructor(props: { name: string }, id?: string) {
+            super(props, id)
         }
 
         get name(): string {
@@ -52,6 +52,23 @@ describe('Entity unit tests', () => {
         expect(sut.createdAt).toBeInstanceOf(Date)
         expect(sut.updatedAt).toBeInstanceOf(Date)
         expect(sut.id).toBeDefined()
+        expect(sut.props).toStrictEqual(props)
+        expect(sut.name).toEqual(props.name)
+    })
+
+    test('if id is invalid, shoulf create entity with a valid one', () => {
+        const props = {
+            name: 'any_name',
+        }
+
+        const id = 'invalid_id'
+
+        const sut = new StubEntity(props, 'invalid_id')
+
+        expect(sut.createdAt).toBeInstanceOf(Date)
+        expect(sut.updatedAt).toBeInstanceOf(Date)
+        expect(sut.id).toBeDefined()
+        expect(sut.id).not.toEqual(id)
         expect(sut.props).toStrictEqual(props)
         expect(sut.name).toEqual(props.name)
     })
