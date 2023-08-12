@@ -1,8 +1,8 @@
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { Either, left, right } from '@/shared/domain/contracts/either'
-import { NotFoundError } from '@/shared/domain/errors/not-found.error'
 import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { UserOutput, UserOutputMapper } from '../dto/user-output'
+import { UserNotFoundError } from '../errors/user-not-found.error'
 
 export namespace GetUserUseCase {
     export type Input = {
@@ -16,7 +16,7 @@ export namespace GetUserUseCase {
 
         async execute(
             input: Input,
-        ): Promise<Either<NotFoundError | BadRequestError, Output>> {
+        ): Promise<Either<UserNotFoundError | BadRequestError, Output>> {
             const { id } = input
 
             if (!id) {
@@ -26,7 +26,7 @@ export namespace GetUserUseCase {
             const userOrError = await this.repository.findById(id)
 
             if (userOrError.isLeft()) {
-                return left(userOrError.value)
+                return left(new UserNotFoundError('id', id))
             }
 
             const user = userOrError.value
