@@ -4,9 +4,10 @@ import { NotFoundError } from '@/shared/domain/errors/not-found.error'
 import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { UserOutput, UserOutputMapper } from '../dto/user-output'
 
-export namespace GetUserUseCase {
+export namespace UpdateUserUseCase {
     export type Input = {
         id: string
+        name?: string
     }
 
     export type Output = UserOutput
@@ -30,6 +31,12 @@ export namespace GetUserUseCase {
             }
 
             const user = userOrError.value
+
+            if (input.name) {
+                user.updateName(input.name)
+            }
+
+            await this.repository.update(user)
 
             return right(UserOutputMapper.toOutput(user))
         }

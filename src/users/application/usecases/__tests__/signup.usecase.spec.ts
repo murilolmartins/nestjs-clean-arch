@@ -34,9 +34,6 @@ describe('Signup usecase unit tests', () => {
         expect(result.isRight() && result.value.email).toEqual(user.email)
         expect(result.isRight() && result.value.createdAt).toBeInstanceOf(Date)
         expect(result.isRight() && result.value.updatedAt).toBeInstanceOf(Date)
-        expect(result.isRight() && result.value.password).not.toEqual(
-            user.password,
-        )
         expect(spyInsert).toBeCalledTimes(1)
         expect(spyEmailExists).toBeCalledTimes(1)
         expect(spyGenerateHash).toBeCalledTimes(1)

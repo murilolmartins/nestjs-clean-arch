@@ -4,7 +4,7 @@ import { EntityValidationError } from '@/shared/domain/errors/validation.error'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { HashProvider } from '../providers/hash.provider'
-import { UserOutput } from '../dto/user-output'
+import { UserOutput, UserOutputMapper } from '../dto/user-output'
 import { UseCase as BaseUseCase } from '@/shared/application/usecase/use-case'
 
 export namespace SignupUseCase {
@@ -53,7 +53,7 @@ export namespace SignupUseCase {
 
             await this.userRepository.insert(userOrError.value)
 
-            return right(userOrError.value.toJSON())
+            return right(UserOutputMapper.toOutput(userOrError.value))
         }
     }
 }
