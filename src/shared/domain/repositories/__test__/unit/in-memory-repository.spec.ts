@@ -51,13 +51,16 @@ describe('InMemoryRepository unit tests', () => {
 
         const result = await sut.findById(entity.id)
 
-        expect(result).toStrictEqual(entity)
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value).toStrictEqual(entity)
     })
 
-    it('Should throw error on find if entity id does not exist', async () => {
-        await expect(sut.findById('any_id')).rejects.toThrow(
-            new NotFoundError('Entity not found'),
-        )
+    it('Should return NotFoundError on find if entity id does not exist', async () => {
+        const result = await sut.findById('wrong_id')
+
+        expect(result.isLeft()).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotFoundError)
+        expect(result.value).toHaveProperty('message', 'Entity not found')
     })
 
     test('Find all entities', async () => {
@@ -96,12 +99,12 @@ describe('InMemoryRepository unit tests', () => {
 
         const result = await sut.findById(entity.id)
 
-        expect(result).toStrictEqual(entityUpdated)
-        expect(sut.entities).toHaveLength(1)
-        expect(sut.entities[0].toJSON()).toStrictEqual(entityUpdated.toJSON())
+        expect(result.isRight()).toBeTruthy()
+        expect(result.value).toStrictEqual(entityUpdated)
+        expect(result.value).not.toStrictEqual(entity)
     })
 
-    it('Should throw error on update if entity id does not exist', async () => {
+    it('Should return NotFoundError on update if entity id does not exist', async () => {
         const props = {
             name: 'any_name',
             price: 10,
@@ -109,9 +112,11 @@ describe('InMemoryRepository unit tests', () => {
 
         const entity = new StubEntity(props)
 
-        await expect(sut.update(entity)).rejects.toThrow(
-            new NotFoundError('Entity not found'),
-        )
+        const result = await sut.update(entity)
+
+        expect(result.isLeft()).toBeTruthy()
+        expect(result.value).toBeInstanceOf(NotFoundError)
+        expect(result.value).toHaveProperty('message', 'Entity not found')
     })
 
     test('Delete entity', async () => {

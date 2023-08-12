@@ -1,27 +1,38 @@
+import { Either, left, right } from '../contracts/either'
 import { Entity } from '../entities/entity'
-import { NotFoundError } from '../errors/not-found-error'
+import { NotFoundError } from '../errors/not-found.error'
 import { RepositoryInterface } from './repository-contracts'
 
 export abstract class InMemoryRepository<E extends Entity>
     implements RepositoryInterface<E>
 {
-    public readonly entities: E[] = []
+    public entities: E[] = []
 
     async insert(entity: E): Promise<void> {
         this.entities.push(entity)
     }
 
-    async findById(id: string): Promise<E | undefined> {
-        return this._get(id)
+    async findById(id: string): Promise<Either<NotFoundError, E>> {
+        try {
+            return right(await this._get(id))
+        } catch (e) {
+            return left(e as NotFoundError)
+        }
     }
 
     async findAll(): Promise<E[]> {
         return this.entities
     }
 
-    async update(entity: E): Promise<void> {
-        const index = await this._getIndexOf(entity.id)
-        this.entities[index] = entity
+    async update(entity: E): Promise<Either<NotFoundError, E>> {
+        try {
+            const index = await this._getIndexOf(entity.id)
+            this.entities[index] = entity
+
+            return right(entity)
+        } catch (e) {
+            return left(e as NotFoundError)
+        }
     }
 
     async delete(id: string): Promise<void> {

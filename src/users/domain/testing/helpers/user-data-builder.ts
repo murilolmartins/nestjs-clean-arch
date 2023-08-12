@@ -8,13 +8,10 @@ export const UserDataBuilder = (data?: Partial<UserProps>): UserProps => ({
     ...data,
 })
 
-export const UsersDataBuilder = ({
-    data,
+export const UsersDataBuilder = (
+    data = [] as Partial<UserProps>[],
     quantity = 5,
-}: {
-    data?: Partial<UserProps>[]
-    quantity?: number
-}): UserProps[] =>
-    data
+): UserProps[] =>
+    data.length
         ? data.map(user => UserDataBuilder(user))
         : Array.from({ length: quantity }, () => UserDataBuilder())
