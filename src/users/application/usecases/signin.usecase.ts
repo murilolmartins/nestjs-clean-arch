@@ -4,7 +4,7 @@ import { UseCase as BaseUseCase } from '@/shared/application/usecase/use-case'
 import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { HashProvider } from '../providers/hash.provider'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
-import { InvalidCredentialsError } from '@/shared/domain/errors/invalid-credentials'
+import { InvalidCredentialsError } from '@/shared/application/errors/invalid-credentials'
 
 export namespace SignInUseCase {
     export type Input = {

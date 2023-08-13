@@ -6,21 +6,20 @@ import {
     error,
     ok,
 } from '@/shared/presentation/contracts/http'
-import { SignupUseCase } from '@/users/application/usecases/signup.usecase'
+import { SignInUseCase } from '@/users/application/usecases/signin.usecase'
 
-export namespace SignUpController {
-    export type Body = SignupUseCase.Input
+export namespace SignInController {
+    export type Body = SignInUseCase.Input
 
     export type Request = HttpRequest<Body>
 
-    export type Response = HttpResponse<SignupUseCase.Output | HttpError>
+    export type Response = HttpResponse<SignInUseCase.Output | HttpError>
 
     export class Controller implements BaseController {
-        constructor(private readonly signUp: SignupUseCase.UseCase) {}
+        constructor(private readonly signIn: SignInUseCase.UseCase) {}
         async handle(request: Request): Promise<Response> {
-            const { name, email, password } = request.body
-            const response = await this.signUp.execute({
-                name,
+            const { email, password } = request.body
+            const response = await this.signIn.execute({
                 email,
                 password,
             })
@@ -29,7 +28,7 @@ export namespace SignUpController {
                 return error(response.value, response.value.statusCode)
             }
 
-            return ok(response.value, 201)
+            return ok(response.value, 200)
         }
     }
 }

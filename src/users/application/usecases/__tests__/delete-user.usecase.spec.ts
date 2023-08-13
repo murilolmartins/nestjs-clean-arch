@@ -1,19 +1,19 @@
 import { UserInMemoryRepository } from '@/users/infra/repositories/userInMemory.repository'
-import { DeleteUserUsecase } from '../delete-user.usecase'
+import { DeleteUserUseCase } from '../delete-user.usecase'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { UserNotFoundError } from '../../errors/user-not-found.error'
 
 describe('DeleteUserUseCase unit tests', () => {
-    let sut: DeleteUserUsecase.UseCase
+    let sut: DeleteUserUseCase.UseCase
     let repository: UserInMemoryRepository
     let spyFindById: jest.SpyInstance
     let spyDelete: jest.SpyInstance
 
     beforeEach(() => {
         repository = new UserInMemoryRepository()
-        sut = new DeleteUserUsecase.UseCase(repository)
+        sut = new DeleteUserUseCase.UseCase(repository)
         spyDelete = jest.spyOn(repository, 'delete')
         spyFindById = jest.spyOn(repository, 'findById')
     })

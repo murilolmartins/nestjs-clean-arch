@@ -4,7 +4,7 @@ import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { UserNotFoundError } from '../errors/user-not-found.error'
 import { Either, left, right } from '@/shared/domain/contracts/either'
 
-export namespace DeleteUserUsecase {
+export namespace DeleteUserUseCase {
     export type Input = {
         id: string
     }

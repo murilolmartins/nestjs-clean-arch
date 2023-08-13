@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateUserDto } from './create-user.dto';
+import { UpdateUserController } from '@/users/presentation/controllers/update-user.controller'
+import { IsString, MaxLength } from 'class-validator'
 
-export class UpdateUserDto extends PartialType(CreateUserDto) {}
+export class UpdateUserDto implements UpdateUserController.Body {
+    @MaxLength(255)
+    @IsString()
+    name?: string
+}

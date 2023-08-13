@@ -6,6 +6,7 @@ import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { HashProvider } from '../providers/hash.provider'
 import { UserOutput, UserOutputMapper } from '../dto/user-output'
 import { UseCase as BaseUseCase } from '@/shared/application/usecase/use-case'
+import { ConflictError } from '@/shared/domain/errors/conflict.error'
 
 export namespace SignupUseCase {
     export interface Input {
@@ -23,7 +24,12 @@ export namespace SignupUseCase {
         ) {}
         async execute(
             input: Input,
-        ): Promise<Either<BadRequestError | EntityValidationError, Output>> {
+        ): Promise<
+            Either<
+                BadRequestError | EntityValidationError | ConflictError,
+                Output
+            >
+        > {
             const { name, email, password } = input
 
             if (!name || !email || !password) {
