@@ -1,9 +1,9 @@
-import { UserInMemoryRepository } from '@/users/infra/repositories/userInMemory.repository'
 import { DeleteUserUseCase } from '../delete-user.usecase'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { UserNotFoundError } from '../../errors/user-not-found.error'
+import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
 
 describe('DeleteUserUseCase unit tests', () => {
     let sut: DeleteUserUseCase.UseCase

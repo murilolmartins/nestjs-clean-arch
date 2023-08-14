@@ -1,9 +1,9 @@
 import { UserEntity } from '@/users/domain/entities/user.entity'
-import { UserInMemoryRepository } from '../../userInMemory.repository'
 import { UsersDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { NotFoundError } from '@/shared/domain/errors/not-found.error'
 import { ConflictError } from '@/shared/domain/errors/conflict.error'
 import { SortDirectionEnum } from '@/shared/domain/repositories/searchble-repository-contracts'
+import { UserInMemoryRepository } from '../../userInMemory.repository'
 
 describe('UserMemoryRepository unit tests', () => {
     let sut: UserInMemoryRepository

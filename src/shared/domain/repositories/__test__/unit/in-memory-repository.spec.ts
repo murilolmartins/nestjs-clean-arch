@@ -112,11 +112,9 @@ describe('InMemoryRepository unit tests', () => {
 
         const entity = new StubEntity(props)
 
-        const result = await sut.update(entity)
-
-        expect(result.isLeft()).toBeTruthy()
-        expect(result.value).toBeInstanceOf(NotFoundError)
-        expect(result.value).toHaveProperty('message', 'Entity not found')
+        await expect(() => sut.update(entity)).rejects.toThrow(
+            new NotFoundError('Entity not found'),
+        )
     })
 
     test('Delete entity', async () => {

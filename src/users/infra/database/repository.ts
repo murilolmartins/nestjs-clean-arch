@@ -1,4 +1,4 @@
-import { UserInMemoryRepository } from './userInMemory.repository'
+import { UserInMemoryRepository } from './in-memory/repositories/userInMemory.repository'
 
 export enum UserRepositoryEnum {
     IN_MEMORY = 'in-memory',

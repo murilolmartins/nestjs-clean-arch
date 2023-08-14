@@ -24,15 +24,9 @@ export abstract class InMemoryRepository<E extends Entity>
         return this.entities
     }
 
-    async update(entity: E): Promise<Either<NotFoundError, E>> {
-        try {
-            const index = await this._getIndexOf(entity.id)
-            this.entities[index] = entity
-
-            return right(entity)
-        } catch (e) {
-            return left(e as NotFoundError)
-        }
+    async update(entity: E): Promise<void> {
+        const index = await this._getIndexOf(entity.id)
+        this.entities[index] = entity
     }
 
     async delete(id: string): Promise<void> {

@@ -4,14 +4,17 @@ import { EntityValidationError } from '@/shared/domain/errors/validation.error'
 import { Either, left, right } from '@/shared/domain/contracts/either'
 
 export type UserProps = {
+    id?: string
     name: string
     email: string
     password: string
+    updatedAt?: Date
+    createdAt?: Date
 }
 
 export class UserEntity extends Entity<UserProps> {
     constructor(public readonly props: UserProps) {
-        super(props)
+        super(props, props.id, props.createdAt, props.updatedAt)
     }
 
     static create(props: UserProps): Either<EntityValidationError, UserEntity> {

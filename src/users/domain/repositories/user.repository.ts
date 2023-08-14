@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import { Either } from '@/shared/domain/contracts/either'
 import { UserEntity } from '../entities/user.entity'
 import {

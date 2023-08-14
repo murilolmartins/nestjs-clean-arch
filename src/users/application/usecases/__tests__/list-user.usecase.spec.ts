@@ -1,11 +1,11 @@
 import { UsersDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
-import { UserInMemoryRepository } from '@/users/infra/repositories/userInMemory.repository'
 import { ListUsersUseCase } from '../list-users.usecase'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import {
     SearchResult,
     SortDirectionEnum,
 } from '@/shared/domain/repositories/searchble-repository-contracts'
+import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
 
 describe('ListUserUseCase unit tests', () => {
     let sut: ListUsersUseCase.UseCase

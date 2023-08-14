@@ -1,9 +1,6 @@
 import { SignupUseCase } from '@/users/application/usecases/signup.usecase'
 import { HashProviderEnum, HashProviderMap } from '../providers/hash/hash'
-import {
-    UserRepositoryEnum,
-    UserRepositoryMap,
-} from '../repositories/repository'
+import { UserRepositoryEnum, UserRepositoryMap } from '../database/repository'
 
 export const SingUpUseCaseInMemoryFactory = (
     repository: UserRepositoryEnum = UserRepositoryEnum.IN_MEMORY,

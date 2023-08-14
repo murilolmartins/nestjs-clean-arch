@@ -1,8 +1,8 @@
-import { UserInMemoryRepository } from '@/users/infra/repositories/userInMemory.repository'
 import { SignInUseCase } from '../signin.usecase'
 import { BcryptHashProvider } from '@/users/infra/providers/hash/bccrypt-hash.provider'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
+import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
 
 describe('SignInUseCase unit tests', () => {
     let sut: SignInUseCase.UseCase

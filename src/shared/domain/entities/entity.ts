@@ -1,17 +1,16 @@
 import { UUIDHelper } from '../helpers/uuid.helper'
 
 export class Entity<T = any> {
-    public readonly createdAt: Date
-    public readonly updatedAt: Date
-
     constructor(
         public readonly props: T,
         public readonly id?: string,
+        public readonly createdAt?: Date,
+        public readonly updatedAt?: Date,
     ) {
         this.props = props
         this.id = UUIDHelper.validate(id) ? id : UUIDHelper.generate()
-        this.createdAt = new Date()
-        this.updatedAt = new Date()
+        this.createdAt = createdAt || new Date()
+        this.updatedAt = updatedAt || new Date()
     }
 
     toJSON(): T & { id: string; createdAt: Date; updatedAt: Date } {
