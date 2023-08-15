@@ -12,9 +12,9 @@ describe('UserEntity unit tests', () => {
     })
 
     it('Instance class', () => {
-        expect(sut.name).toEqual(props.name)
-        expect(sut.email).toEqual(props.email)
-        expect(sut.password).toEqual(props.password)
+        expect(sut.props.name).toEqual(props.name)
+        expect(sut.props.email).toEqual(props.email)
+        expect(sut.props.password).toEqual(props.password)
         expect(sut.createdAt).toBeInstanceOf(Date)
         expect(sut.updatedAt).toBeInstanceOf(Date)
         expect(sut.id).toBeDefined()

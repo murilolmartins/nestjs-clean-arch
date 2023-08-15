@@ -9,7 +9,8 @@ describe('UserModelMapper integration tests', () => {
     let user: User
 
     beforeAll(async () => {
-        prismaClient = await prismaConnection()
+        prismaClient = prismaConnection()
+        prismaClient.$connect()
     })
 
     beforeEach(async () => {

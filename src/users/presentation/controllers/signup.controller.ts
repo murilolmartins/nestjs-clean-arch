@@ -7,13 +7,15 @@ import {
     ok,
 } from '@/shared/presentation/contracts/http'
 import { SignupUseCase } from '@/users/application/usecases/signup.usecase'
+import { UserView } from '../dtos/user-view'
+import { UserPresenter } from '../presenters/user.presenter'
 
 export namespace SignUpController {
     export type Body = SignupUseCase.Input
 
     export type Request = HttpRequest<Body>
 
-    export type Response = HttpResponse<SignupUseCase.Output | HttpError>
+    export type Response = HttpResponse<UserView | HttpError>
 
     export class Controller implements BaseController {
         constructor(private readonly signUp: SignupUseCase.UseCase) {}
@@ -29,7 +31,9 @@ export namespace SignUpController {
                 return error(response.value, response.value.statusCode)
             }
 
-            return ok(response.value, 201)
+            const userToPresent = new UserPresenter(response.value)
+
+            return ok(userToPresent.toPresentation(), 201)
         }
     }
 }

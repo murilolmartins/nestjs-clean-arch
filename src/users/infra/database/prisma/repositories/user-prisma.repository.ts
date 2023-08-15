@@ -11,7 +11,19 @@ import { NotFoundError } from '@/shared/domain/errors/not-found.error'
 import { ConflictError } from '@/shared/domain/errors/conflict.error'
 
 export class UserPrismaRepository implements UserRepository.Repository {
+    sortableFields: string[] = ['name', 'createdAt']
     constructor(private readonly prismaService: PrismaService) {}
+
+    async insert(entity: UserEntity): Promise<void> {
+        await this.prismaService.user.create({
+            data: {
+                id: entity.id,
+                name: entity.props.name,
+                email: entity.props.email,
+                password: entity.props.password,
+            },
+        })
+    }
 
     async findByEmail(email: string): FindByEmailReturn {
         const user = await this.prismaService.user.findUnique({
@@ -37,14 +49,52 @@ export class UserPrismaRepository implements UserRepository.Repository {
 
         return right(null)
     }
-    search(
+
+    async search(
         props: UserRepository.SearchParams,
-    ): Promise<UserRepository.SearchResult> {}
-    async insert(entity: UserEntity): Promise<void> {
-        await this.prismaService.user.create({
-            data: {
-                ...entity.toJSON(),
+    ): Promise<UserRepository.SearchResult> {
+        const sortable = this.sortableFields?.includes(props.sort) || false
+        const orderByField = sortable ? props.sort : 'createdAt'
+        const orderByDir = sortable ? props.sortDir : 'desc'
+
+        const count = await this.prismaService.user.count({
+            ...(props.filter && {
+                where: {
+                    name: {
+                        contains: props.filter,
+                        mode: 'insensitive',
+                    },
+                },
+            }),
+        })
+
+        const models = await this.prismaService.user.findMany({
+            ...(props.filter && {
+                where: {
+                    name: {
+                        contains: props.filter,
+                        mode: 'insensitive',
+                    },
+                },
+            }),
+            orderBy: {
+                [orderByField]: orderByDir,
             },
+            skip:
+                props.page && props.page > 0
+                    ? (props.page - 1) * props.perPage
+                    : 1,
+            take: props.perPage && props.perPage > 0 ? props.perPage : 15,
+        })
+
+        return new UserRepository.SearchResult({
+            items: models.map(model => UserModelMapper.toEntity(model)),
+            total: count,
+            currentPage: props.page,
+            perPage: props.perPage,
+            sort: orderByField,
+            sortDir: orderByDir,
+            filter: props.filter,
         })
     }
     async findById(id: string): Promise<Either<NotFoundError, UserEntity>> {
@@ -55,6 +105,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
             if (e instanceof NotFoundError) {
                 return left(e)
             }
+            throw e
         }
     }
     async findAll(): Promise<UserEntity[]> {
@@ -68,9 +119,7 @@ export class UserPrismaRepository implements UserRepository.Repository {
             where: {
                 id: entity.id,
             },
-            data: {
-                name: entity.props.name,
-            },
+            data: entity.toJSON(),
         })
     }
     async delete(id: string): Promise<void> {

@@ -1,8 +1,8 @@
-import { SignInUseCase } from '../signin.usecase'
 import { BcryptHashProvider } from '@/users/infra/providers/hash/bccrypt-hash.provider'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { SignInUseCase } from '../../signin.usecase'
 
 describe('SignInUseCase unit tests', () => {
     let sut: SignInUseCase.UseCase
@@ -36,13 +36,7 @@ describe('SignInUseCase unit tests', () => {
         })
 
         expect(result.isRight()).toBeTruthy()
-        expect(result.value).toStrictEqual({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        })
+        expect(result.value).toStrictEqual(user.toJSON())
         expect(spyFindByEmail).toBeCalledTimes(1)
         expect(spyCompareHash).toBeCalledTimes(1)
     })

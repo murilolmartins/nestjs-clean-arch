@@ -1,39 +1,30 @@
-import { DeleteUserUseCase } from '../delete-user.usecase'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
-import { UserNotFoundError } from '../../errors/user-not-found.error'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { UserNotFoundError } from '@/users/application/errors/user-not-found.error'
+import { GetUserUseCase } from '../../get-user.usecase'
 
-describe('DeleteUserUseCase unit tests', () => {
-    let sut: DeleteUserUseCase.UseCase
-    let repository: UserInMemoryRepository
-    let spyFindById: jest.SpyInstance
-    let spyDelete: jest.SpyInstance
+describe('GetUserUseCase unit tests', () => {
+    let sut: GetUserUseCase.UseCase
+    let userRepository: UserInMemoryRepository
 
     beforeEach(() => {
-        repository = new UserInMemoryRepository()
-        sut = new DeleteUserUseCase.UseCase(repository)
-        spyDelete = jest.spyOn(repository, 'delete')
-        spyFindById = jest.spyOn(repository, 'findById')
+        userRepository = new UserInMemoryRepository()
+        sut = new GetUserUseCase.UseCase(userRepository)
     })
 
-    it('Should delete a user', async () => {
-        const userProps = UserDataBuilder()
+    it('Should return a user', async () => {
+        const user = new UserEntity(UserDataBuilder())
 
-        const user = new UserEntity(userProps)
+        await userRepository.insert(user)
 
-        repository.entities.push(user)
-
+        const spyFindById = jest.spyOn(userRepository, 'findById')
         const result = await sut.execute({ id: user.id })
 
         expect(result.isRight()).toBeTruthy()
-        expect(result.value).toStrictEqual({
-            message: 'User deleted successfully',
-        })
-        expect(repository.entities).toHaveLength(0)
+        expect(result.value).toStrictEqual(user.toJSON())
         expect(spyFindById).toBeCalledTimes(1)
-        expect(spyDelete).toBeCalledTimes(1)
     })
 
     it('Should return a BadRequestError if is missing a input field', async () => {
@@ -42,11 +33,10 @@ describe('DeleteUserUseCase unit tests', () => {
         expect(result.isLeft()).toBeTruthy()
         expect(result.value).toBeInstanceOf(BadRequestError)
         expect(result.value).toHaveProperty('message', 'Missing input fields')
-        expect(spyFindById).toBeCalledTimes(0)
-        expect(spyDelete).toBeCalledTimes(0)
     })
 
-    it('Should return a UserNotFoundError if id does not exist', async () => {
+    it("Should return a NotFoundError if user doesn't exist", async () => {
+        const spyFindById = jest.spyOn(userRepository, 'findById')
         const result = await sut.execute({ id: 'wrong_id' })
 
         expect(result.isLeft()).toBeTruthy()
@@ -56,6 +46,5 @@ describe('DeleteUserUseCase unit tests', () => {
             'User not found with id: wrong_id',
         )
         expect(spyFindById).toBeCalledTimes(1)
-        expect(spyDelete).toBeCalledTimes(0)
     })
 })

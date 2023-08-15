@@ -1,11 +1,11 @@
 import { BcryptHashProvider } from '@/users/infra/providers/hash/bccrypt-hash.provider'
-import { SignupUseCase } from '../signup.usecase'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { faker } from '@faker-js/faker'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { EntityValidationError } from '@/shared/domain/errors/validation.error'
 import { ConflictError } from '@/shared/domain/errors/conflict.error'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { SignupUseCase } from '../../signup.usecase'
 
 describe('Signup usecase unit tests', () => {
     let sut: SignupUseCase.UseCase

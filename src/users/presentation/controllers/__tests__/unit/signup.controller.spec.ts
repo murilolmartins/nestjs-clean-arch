@@ -3,6 +3,7 @@ import { left, right } from '@/shared/domain/contracts/either'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { SignupUseCase } from '@/users/application/usecases/signup.usecase'
 import { SignUpController } from '../../signup.controller'
+import { formatDateToPtBr } from '@/shared/helpers/format-date-to-pt-br'
 
 describe('SignUpController unit tests', () => {
     let sut: SignUpController.Controller
@@ -25,6 +26,7 @@ describe('SignUpController unit tests', () => {
             id: 'any_id',
             name: userProps.name,
             email: userProps.email,
+            password: userProps.password,
             createdAt: new Date(),
             updatedAt: new Date(),
         }
@@ -34,7 +36,13 @@ describe('SignUpController unit tests', () => {
         const result = await sut.handle(request)
 
         expect(result.statusCode).toBe(201)
-        expect(result.body).toStrictEqual(response)
+        expect(result.body).toStrictEqual({
+            id: response.id,
+            name: response.name,
+            email: response.email,
+            createdAt: formatDateToPtBr(response.updatedAt),
+            updatedAt: formatDateToPtBr(response.updatedAt),
+        })
     })
 
     it('should return an error if useCase returns BadRequestError', async () => {

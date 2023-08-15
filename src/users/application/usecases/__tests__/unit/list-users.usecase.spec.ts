@@ -1,11 +1,11 @@
 import { UsersDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
-import { ListUsersUseCase } from '../list-users.usecase'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import {
     SearchResult,
     SortDirectionEnum,
 } from '@/shared/domain/repositories/searchble-repository-contracts'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { ListUsersUseCase } from '../../list-users.usecase'
 
 describe('ListUserUseCase unit tests', () => {
     let sut: ListUsersUseCase.UseCase
@@ -30,13 +30,9 @@ describe('ListUserUseCase unit tests', () => {
         expect(result.isRight()).toBeTruthy()
         expect(result.isRight() && result.value.items).toHaveLength(5)
         expect(result.isRight() && result.value.total).toBe(5)
-        expect(result.isRight() && result.value.items[0]).toStrictEqual({
-            id: users[0].id,
-            name: users[0].name,
-            email: users[0].email,
-            createdAt: users[0].createdAt,
-            updatedAt: users[0].updatedAt,
-        })
+        expect(result.isRight() && result.value.items[0]).toStrictEqual(
+            users[0].toJSON(),
+        )
     })
 
     it('Should return a list of users with pagination sorted by name', async () => {

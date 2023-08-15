@@ -1,9 +1,9 @@
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
-import { UpdateUserUseCase } from '../update-user.usecase'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
-import { UserNotFoundError } from '../../errors/user-not-found.error'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { UpdateUserUseCase } from '../../update-user.usecase'
+import { UserNotFoundError } from '@/users/application/errors/user-not-found.error'
 
 describe('UpdateUserUseCase unit tests', () => {
     let sut: UpdateUserUseCase.UseCase
@@ -29,6 +29,7 @@ describe('UpdateUserUseCase unit tests', () => {
             id: user.id,
             name: 'new name',
             email: user.email,
+            password: user.password,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         })
@@ -45,13 +46,7 @@ describe('UpdateUserUseCase unit tests', () => {
         const result = await sut.execute({ id: user.id })
 
         expect(result.isRight()).toBeTruthy()
-        expect(result.value).toStrictEqual({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        })
+        expect(result.value).toStrictEqual(user.toJSON())
         expect(spyUpdate).toBeCalledTimes(0)
     })
 
@@ -69,6 +64,7 @@ describe('UpdateUserUseCase unit tests', () => {
             id: user.id,
             name: 'new name',
             email: user.email,
+            password: user.password,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
         })

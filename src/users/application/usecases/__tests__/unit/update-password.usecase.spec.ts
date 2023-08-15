@@ -1,11 +1,11 @@
-import { UpdatePasswordUseCase } from '../update-password.usecase'
 import { BcryptHashProvider } from '@/users/infra/providers/hash/bccrypt-hash.provider'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data-builder'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { BadRequestError } from '@/shared/application/errors/bad-request.error'
 import { InvalidPasswordError } from '@/shared/application/errors/invalid-password.error'
-import { UserNotFoundError } from '../../errors/user-not-found.error'
 import { UserInMemoryRepository } from '@/users/infra/database/in-memory/repositories/userInMemory.repository'
+import { UpdatePasswordUseCase } from '../../update-password.usecase'
+import { UserNotFoundError } from '@/users/application/errors/user-not-found.error'
 
 describe('UpdatePasswordUseCase unit tests', () => {
     let sut: UpdatePasswordUseCase.UseCase

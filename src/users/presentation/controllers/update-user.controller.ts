@@ -7,6 +7,8 @@ import {
 } from '@/shared/presentation/contracts/http'
 import { Controller as BaseController } from '@/shared/presentation/contracts/controller'
 import { UpdateUserUseCase } from '@/users/application/usecases/update-user.usecase'
+import { UserView } from '../dtos/user-view'
+import { UserPresenter } from '../presenters/user.presenter'
 
 export namespace UpdateUserController {
     export type Body = Omit<UpdateUserUseCase.Input, 'id'>
@@ -14,7 +16,7 @@ export namespace UpdateUserController {
     export type Params = Pick<UpdateUserUseCase.Input, 'id'>
 
     export type Request = HttpRequest<Body, Params>
-    export type Response = HttpResponse<UpdateUserUseCase.Output | HttpError>
+    export type Response = HttpResponse<UserView | HttpError>
 
     export class Controller implements BaseController {
         constructor(private readonly updateUser: UpdateUserUseCase.UseCase) {}
@@ -27,7 +29,9 @@ export namespace UpdateUserController {
                 return error(response.value, response.value.statusCode)
             }
 
-            return ok(response.value, 201)
+            const userToPresent = new UserPresenter(response.value)
+
+            return ok(userToPresent.toPresentation(), 201)
         }
     }
 }

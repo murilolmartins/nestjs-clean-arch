@@ -2,13 +2,13 @@ import {
     PaginationOutput,
     PaginationOutputMapper,
 } from '@/shared/application/dtos/pagination-output'
-import { SearchInput } from '@/shared/application/dtos/search-input'
 import { UseCase as BaseUseCase } from '@/shared/application/usecase/use-case'
 import { Either, right } from '@/shared/domain/contracts/either'
 import { SearchResult } from '@/shared/domain/repositories/searchble-repository-contracts'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 import { UserRepository } from '@/users/domain/repositories/user.repository'
 import { UserOutput, UserOutputMapper } from '../dto/user-output'
+import { SearchInput } from '@/shared/presentation/contracts/search-input'
 
 export namespace ListUsersUseCase {
     export type Input = SearchInput

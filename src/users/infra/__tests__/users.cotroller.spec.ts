@@ -13,6 +13,7 @@ import { UpdateUserDto } from '../dto/update-user.dto'
 import { UpdatePasswordDto } from '../dto/update-password.dto'
 import { ListUsersDto } from '../dto/list-users.dto'
 import { SortDirectionEnum } from '@/shared/domain/repositories/searchble-repository-contracts'
+import { formatDateToPtBr } from '@/shared/helpers/format-date-to-pt-br'
 
 describe('UsersController unit tests', () => {
     let sut: UsersController
@@ -43,8 +44,8 @@ describe('UsersController unit tests', () => {
                 id: 'any_id',
                 name: 'any_name',
                 email: 'any_email',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: formatDateToPtBr(new Date()),
+                updatedAt: formatDateToPtBr(new Date()),
             },
         }
 
@@ -66,8 +67,8 @@ describe('UsersController unit tests', () => {
                 id: 'any_id',
                 name: 'any_name',
                 email: 'any_email',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: formatDateToPtBr(new Date()),
+                updatedAt: formatDateToPtBr(new Date()),
             },
         }
 
@@ -93,8 +94,8 @@ describe('UsersController unit tests', () => {
                 id: 'any_id',
                 name: 'new_name',
                 email: 'any_email',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: formatDateToPtBr(new Date()),
+                updatedAt: formatDateToPtBr(new Date()),
             },
         }
 
@@ -140,19 +141,21 @@ describe('UsersController unit tests', () => {
         const response: ListUsersController.Response = {
             statusCode: 200,
             body: {
-                items: [
+                data: [
                     {
                         id: 'any_id',
                         name: 'any_name',
                         email: 'any_email',
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
+                        createdAt: formatDateToPtBr(new Date()),
+                        updatedAt: formatDateToPtBr(new Date()),
                     },
                 ],
-                currentPage: 1,
-                total: 1,
-                lastPage: 1,
-                perPage: 15,
+                meta: {
+                    currentPage: 1,
+                    total: 1,
+                    lastPage: 1,
+                    perPage: 15,
+                },
             },
         }
 
@@ -179,8 +182,8 @@ describe('UsersController unit tests', () => {
                 id: 'any_id',
                 name: 'any_name',
                 email: 'any_email',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: formatDateToPtBr(new Date()),
+                updatedAt: formatDateToPtBr(new Date()),
             },
         }
 
@@ -207,8 +210,8 @@ describe('UsersController unit tests', () => {
                 id: 'any_id',
                 name: 'any_name',
                 email: 'any_email',
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: formatDateToPtBr(new Date()),
+                updatedAt: formatDateToPtBr(new Date()),
             },
         }
 

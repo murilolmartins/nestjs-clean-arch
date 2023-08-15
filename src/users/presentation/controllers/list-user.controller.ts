@@ -7,13 +7,15 @@ import {
     serverError,
 } from '@/shared/presentation/contracts/http'
 import { ListUsersUseCase } from '@/users/application/usecases/list-users.usecase'
+import { UserCollectionPresenter } from '../presenters/user-collection.presenter'
+import { UsersCollectionView } from '../dtos/users-collection-view'
 
 export namespace ListUsersController {
     export type Body = ListUsersUseCase.Input
 
     export type Request = HttpRequest<Body>
 
-    export type Response = HttpResponse<ListUsersUseCase.Output | HttpError>
+    export type Response = HttpResponse<UsersCollectionView | HttpError>
 
     export class Controller implements BaseController {
         constructor(private readonly ListUsers: ListUsersUseCase.UseCase) {}
@@ -31,7 +33,11 @@ export namespace ListUsersController {
                 return serverError(new Error('Internal Server Error'))
             }
 
-            return ok(response.value, 201)
+            const usersToPresentation = new UserCollectionPresenter(
+                response.value,
+            )
+
+            return ok(usersToPresentation.toPresentation(), 201)
         }
     }
 }

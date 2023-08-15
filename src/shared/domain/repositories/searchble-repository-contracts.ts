@@ -93,7 +93,7 @@ export class SearchParams<Filter = string> {
                 : `${value}`
     }
 
-    get sortDir() {
+    get sortDir(): SortDirection | null {
         return this._sortDir
     }
 
