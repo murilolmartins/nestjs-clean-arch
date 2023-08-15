@@ -36,6 +36,7 @@ describe('SingInController unit tests', () => {
         const result = await sut.handle(request)
 
         expect(result.statusCode).toBe(200)
+        expect(result.error).toStrictEqual(null)
         expect(result.body).toStrictEqual({
             id: response.id,
             name: response.name,
@@ -60,9 +61,11 @@ describe('SingInController unit tests', () => {
         const result = await sut.handle(request)
 
         expect(result.statusCode).toBe(400)
-        expect(result.body).toStrictEqual({
+        expect(result).toStrictEqual({
             message: response.message,
             error: response.name,
+            body: null,
+            statusCode: 400,
         })
     })
 })

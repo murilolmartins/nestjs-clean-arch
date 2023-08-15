@@ -6,6 +6,8 @@ export interface HttpRequest<TBody = any, TParams = any> {
 export interface HttpResponse<T = any> {
     statusCode: number
     body: T
+    message?: string
+    error: string
 }
 
 export interface HttpError {
@@ -16,17 +18,22 @@ export interface HttpError {
 export const error = (
     error: Error,
     statusCode: number,
-): HttpResponse<HttpError> => ({
+): HttpResponse<null> => ({
     statusCode,
-    body: { message: error.message, error: error.name },
+    body: null,
+    error: error.name,
+    message: error.message,
 })
 
 export const ok = <T>(data: T, statusCode: number): HttpResponse<T> => ({
     statusCode,
     body: data,
+    error: null,
 })
 
-export const serverError = (error: Error): HttpResponse<HttpError> => ({
+export const serverError = (error: Error): HttpResponse<null> => ({
     statusCode: 500,
-    body: { message: error.message },
+    message: error.message,
+    error: 'Internal Server Error',
+    body: null,
 })

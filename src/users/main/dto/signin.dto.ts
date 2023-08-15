@@ -7,6 +7,7 @@ export class SigninDto implements SignInController.Body {
     @IsNotEmpty()
     email: string
 
+    @IsString()
     @IsNotEmpty()
     password: string
 }

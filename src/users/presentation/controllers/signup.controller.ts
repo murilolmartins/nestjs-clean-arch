@@ -1,6 +1,5 @@
 import { Controller as BaseController } from '@/shared/presentation/contracts/controller'
 import {
-    HttpError,
     HttpRequest,
     HttpResponse,
     error,
@@ -15,7 +14,7 @@ export namespace SignUpController {
 
     export type Request = HttpRequest<Body>
 
-    export type Response = HttpResponse<UserView | HttpError>
+    export type Response = HttpResponse<UserView | null>
 
     export class Controller implements BaseController {
         constructor(private readonly signUp: SignupUseCase.UseCase) {}
@@ -31,9 +30,13 @@ export namespace SignUpController {
                 return error(response.value, response.value.statusCode)
             }
 
-            const userToPresent = new UserPresenter(response.value)
+            const userToPresent = this.toPresentation(response.value)
 
-            return ok(userToPresent.toPresentation(), 201)
+            return ok(userToPresent, 201)
+        }
+
+        private toPresentation(response: SignupUseCase.Output): UserView {
+            return new UserPresenter(response).toPresentation()
         }
     }
 }

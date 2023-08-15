@@ -1,5 +1,4 @@
 import {
-    HttpError,
     HttpRequest,
     HttpResponse,
     error,
@@ -14,9 +13,7 @@ export namespace UpdatePasswordController {
     export type Params = Pick<UpdatePasswordUseCase.Input, 'id'>
 
     export type Request = HttpRequest<Body, Params>
-    export type Response = HttpResponse<
-        UpdatePasswordUseCase.Output | HttpError
-    >
+    export type Response = HttpResponse<UpdatePasswordUseCase.Output | null>
 
     export class Controller implements BaseController {
         constructor(

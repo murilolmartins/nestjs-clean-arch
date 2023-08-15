@@ -1,4 +1,4 @@
-import { UsersController } from '../users.controller'
+import { UsersController } from '../../users.controller'
 import { FastifyReply } from 'fastify'
 import * as nestControllerAdapter from '@/shared/infra/adapters/nest-controller.adapter'
 import {
@@ -8,10 +8,10 @@ import {
     SignUpController,
     UpdateUserController,
 } from '@/users/presentation/controllers'
-import { SignupDto } from '../dto/signup.dto'
-import { UpdateUserDto } from '../dto/update-user.dto'
-import { UpdatePasswordDto } from '../dto/update-password.dto'
-import { ListUsersDto } from '../dto/list-users.dto'
+import { SignupDto } from '../../dto/signup.dto'
+import { UpdateUserDto } from '../../dto/update-user.dto'
+import { UpdatePasswordDto } from '../../dto/update-password.dto'
+import { ListUsersDto } from '../../dto/list-users.dto'
 import { SortDirectionEnum } from '@/shared/domain/repositories/searchble-repository-contracts'
 import { formatDateToPtBr } from '@/shared/helpers/format-date-to-pt-br'
 
@@ -47,6 +47,7 @@ describe('UsersController unit tests', () => {
                 createdAt: formatDateToPtBr(new Date()),
                 updatedAt: formatDateToPtBr(new Date()),
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -70,6 +71,7 @@ describe('UsersController unit tests', () => {
                 createdAt: formatDateToPtBr(new Date()),
                 updatedAt: formatDateToPtBr(new Date()),
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -97,6 +99,7 @@ describe('UsersController unit tests', () => {
                 createdAt: formatDateToPtBr(new Date()),
                 updatedAt: formatDateToPtBr(new Date()),
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -116,6 +119,7 @@ describe('UsersController unit tests', () => {
             body: {
                 message: 'User deleted successfully',
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -157,6 +161,7 @@ describe('UsersController unit tests', () => {
                     perPage: 15,
                 },
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -185,6 +190,7 @@ describe('UsersController unit tests', () => {
                 createdAt: formatDateToPtBr(new Date()),
                 updatedAt: formatDateToPtBr(new Date()),
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(
@@ -213,6 +219,7 @@ describe('UsersController unit tests', () => {
                 createdAt: formatDateToPtBr(new Date()),
                 updatedAt: formatDateToPtBr(new Date()),
             },
+            error: null,
         }
 
         spyNestAdapter.mockImplementationOnce(

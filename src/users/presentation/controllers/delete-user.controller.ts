@@ -1,5 +1,4 @@
 import {
-    HttpError,
     HttpRequest,
     HttpResponse,
     error,
@@ -12,7 +11,7 @@ export namespace DeleteUserController {
     export type Params = DeleteUserUseCase.Input
 
     export type Request = HttpRequest<null, Params>
-    export type Response = HttpResponse<DeleteUserUseCase.Output | HttpError>
+    export type Response = HttpResponse<DeleteUserUseCase.Output | null>
 
     export class Controller implements BaseController {
         constructor(private readonly deleteUser: DeleteUserUseCase.UseCase) {}

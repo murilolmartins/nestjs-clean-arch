@@ -1,6 +1,5 @@
 import { Controller as BaseController } from '@/shared/presentation/contracts/controller'
 import {
-    HttpError,
     HttpRequest,
     HttpResponse,
     ok,
@@ -15,7 +14,7 @@ export namespace ListUsersController {
 
     export type Request = HttpRequest<Body>
 
-    export type Response = HttpResponse<UsersCollectionView | HttpError>
+    export type Response = HttpResponse<UsersCollectionView | null>
 
     export class Controller implements BaseController {
         constructor(private readonly ListUsers: ListUsersUseCase.UseCase) {}
@@ -33,11 +32,15 @@ export namespace ListUsersController {
                 return serverError(new Error('Internal Server Error'))
             }
 
-            const usersToPresentation = new UserCollectionPresenter(
-                response.value,
-            )
+            const userListToPresent = this.toPresentation(response.value)
 
-            return ok(usersToPresentation.toPresentation(), 201)
+            return ok(userListToPresent, 201)
+        }
+
+        private toPresentation(
+            response: ListUsersUseCase.Output,
+        ): UsersCollectionView {
+            return new UserCollectionPresenter(response).toPresentation()
         }
     }
 }

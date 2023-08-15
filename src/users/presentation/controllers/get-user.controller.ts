@@ -1,5 +1,4 @@
 import {
-    HttpError,
     HttpRequest,
     HttpResponse,
     error,
@@ -12,7 +11,7 @@ export namespace GetUserController {
     export type Params = GetUserUseCase.Input
 
     export type Request = HttpRequest<null, Params>
-    export type Response = HttpResponse<GetUserUseCase.Output | HttpError>
+    export type Response = HttpResponse<GetUserUseCase.Output | null>
 
     export class Controller implements BaseController {
         constructor(private readonly getUser: GetUserUseCase.UseCase) {}

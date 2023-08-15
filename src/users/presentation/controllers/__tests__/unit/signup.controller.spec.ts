@@ -59,9 +59,11 @@ describe('SignUpController unit tests', () => {
         const result = await sut.handle(request)
 
         expect(result.statusCode).toBe(400)
-        expect(result.body).toStrictEqual({
+        expect(result).toStrictEqual({
+            statusCode: 400,
             message: response.message,
             error: response.name,
+            body: null,
         })
     })
 })
